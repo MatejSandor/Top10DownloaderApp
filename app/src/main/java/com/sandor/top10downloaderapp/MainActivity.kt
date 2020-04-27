@@ -4,6 +4,13 @@ import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import java.io.BufferedReader
+import java.io.IOException
+import java.io.InputStreamReader
+import java.lang.StringBuilder
+import java.net.HttpURLConnection
+import java.net.MalformedURLException
+import java.net.URL
 
 
 class MainActivity : AppCompatActivity() {
@@ -39,5 +46,28 @@ class MainActivity : AppCompatActivity() {
                 Log.d(TAG, "onPostExecute: $result ")
             }
         }
+    }
+
+    private fun downloadXML(urlPath: String?) : String {
+        val xmlResult = StringBuilder()
+
+        try {
+            val url = URL(urlPath)
+            val connection: HttpURLConnection = url.openConnection() as HttpURLConnection
+            val response = connection.responseCode
+            Log.d(TAG1, "DownloadXML: Response was $response")
+
+            val inputStream = connection.inputStream
+            val inputStreamReader = InputStreamReader(inputStream)
+            val reader = BufferedReader(inputStreamReader)
+        } catch (e: MalformedURLException) {
+            Log.e(TAG1,"DownloadXML: invalid URL ${e.message}")
+        } catch (e: IOException) {
+            Log.e(TAG1,"DownloadXML: IO exception reading data: ${e.message}")
+        } catch (e: Exception) {
+            Log.e(TAG1,"DownloadXML: Unknown exception: ${e.message}")
+        }
+
+        return "in process"
     }
 }
