@@ -15,17 +15,19 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
     }
 
-    private inner class DownloadData : AsyncTask<String,Void,String>() {
-        private val TAG = "DownloadData"
+    companion object {
+        private class DownloadData : AsyncTask<String, Void, String>() {
+            private val TAG = "DownloadData"
 
-        override fun doInBackground(vararg params: String?): String {
-            Log.d(TAG,"doInBackground: called")
-            TODO("Not yet implemented")
-        }
+            override fun doInBackground(vararg params: String?): String {
+                Log.d(TAG, "doInBackground: called")
+                TODO("Not yet implemented")
+            }
 
-        override fun onPostExecute(result: String?) {
-            Log.d(TAG,"onPostExecute: called")
-            super.onPostExecute(result)
+            override fun onPostExecute(result: String?) {
+                Log.d(TAG, "onPostExecute: called")
+                super.onPostExecute(result)
+            }
         }
     }
 }
