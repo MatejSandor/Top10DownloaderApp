@@ -4,10 +4,6 @@ import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import java.io.IOException
-import java.lang.StringBuilder
-import java.net.HttpURLConnection
-import java.net.MalformedURLException
 import java.net.URL
 
 
