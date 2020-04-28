@@ -45,29 +45,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             private fun downloadXML(urlPath: String?): String {
-                val xmlResult = StringBuilder()
-
-                try {
-                    val url = URL(urlPath)
-                    val connection: HttpURLConnection = url.openConnection() as HttpURLConnection
-                    val response = connection.responseCode
-                    Log.d(TAG, "DownloadXML: Response was $response")
-
-                    connection.inputStream.buffered().reader().use {xmlResult.append(it)}
-
-                    Log.d(TAG, "Received: ${xmlResult.length} bytes")
-                    return xmlResult.toString()
-                } catch (e: Exception) {
-                    val errorMessage = when (e) {
-                        is MalformedURLException -> "DownloadXML: invalid URL ${e.message}"
-                        is IOException -> "DownloadXML: IO exception reading data: ${e.message}"
-                        is SecurityException -> "DownloadXML: Security Exception: ${e.message}"
-                        else -> "unknown exception: ${e.message}"
-                    }
-
-                }
-
-                return ""
+                return URL(urlPath).readText()
             }
         }
     }
