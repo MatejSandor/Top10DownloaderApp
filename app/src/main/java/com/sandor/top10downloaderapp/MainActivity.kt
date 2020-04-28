@@ -73,6 +73,8 @@ class MainActivity : AppCompatActivity() {
                     Log.e(TAG,"DownloadXML: invalid URL ${e.message}")
                 } catch (e: IOException) {
                     Log.e(TAG,"DownloadXML: IO exception reading data: ${e.message}")
+                } catch (e: SecurityException) {
+                    Log.e(TAG,"DownloadXML: Security Exception: ${e.message}")
                 } catch (e: Exception) {
                     Log.e(TAG,"DownloadXML: Unknown exception: ${e.message}")
                 }
