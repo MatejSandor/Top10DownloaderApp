@@ -15,17 +15,20 @@ class ViewHolder(v: View) {
 }
 
 
-class FeedAdapter(context: Context, private val resource: Int, private val applications: List<FeedEntry>)
-    : ArrayAdapter<FeedEntry>(context,resource, applications) {
+class FeedAdapter(
+    context: Context,
+    private val resource: Int,
+    private val applications: List<FeedEntry>
+) : ArrayAdapter<FeedEntry>(context, resource, applications) {
     private val TAG = "FeedAdapter"
     private val inflater = LayoutInflater.from(context)
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         Log.d(TAG, "getView: called")
-        val view : View
+        val view: View
         val viewHolder: ViewHolder
 
-        if(convertView == null) {
+        if (convertView == null) {
             Log.d(TAG, "getView: called with convertView null")
             view = inflater.inflate(resource, parent, false)
             viewHolder = ViewHolder(view)

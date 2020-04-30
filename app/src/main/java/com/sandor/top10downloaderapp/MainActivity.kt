@@ -5,7 +5,6 @@ import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.ArrayAdapter
 import android.widget.ListView
 import kotlinx.android.synthetic.main.activity_main.*
 import java.net.URL
@@ -22,8 +21,6 @@ class MainActivity : AppCompatActivity() {
 
         Log.d(TAG1, "onCreate: called")
         downloadData.execute("http://ax.itunes.apple.com/WebObjects/MZStoreServices.woa/ws/RSS/topfreeapplications/limit=10/xml")
-
-        Log.d(TAG1, "onCreate: done")
     }
 
     override fun onDestroy() {
@@ -32,11 +29,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     companion object {
-        private class DownloadData(context: Context, listView: ListView) : AsyncTask<String, Void, String>() {
+        private class DownloadData(context: Context, listView: ListView) :
+            AsyncTask<String, Void, String>() {
             private val TAG = "DownloadData"
 
-            var propContext : Context by Delegates.notNull()
-            var propListView : ListView by Delegates.notNull()
+            var propContext: Context by Delegates.notNull()
+            var propListView: ListView by Delegates.notNull()
 
             init {
                 propContext = context
@@ -57,7 +55,8 @@ class MainActivity : AppCompatActivity() {
                 val parseApplications = ParseApplications()
                 parseApplications.parse(result)
 
-                val feedAdapter = FeedAdapter(propContext,R.layout.list_record, parseApplications.applications)
+                val feedAdapter =
+                    FeedAdapter(propContext, R.layout.list_record, parseApplications.applications)
                 propListView.adapter = feedAdapter
             }
 
