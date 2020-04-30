@@ -17,10 +17,13 @@ class MainActivity : AppCompatActivity() {
     private val TAG1 = "MainActivity"
     private var downloadData: DownloadData? = null
 
+    private var feedURL: String = "http://ax.itunes.apple.com/WebObjects/MZStoreServices.woa/ws/RSS/topfreeapplications/limit=%d/xml"
+    private var feedLimit = 10
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        downloadData?.execute("http://ax.itunes.apple.com/WebObjects/MZStoreServices.woa/ws/RSS/topfreeapplications/limit=10/xml")
+        downloadURL(feedURL.format(feedLimit))
     }
 
     private fun downloadURL(feedURL: String) {
@@ -30,22 +33,36 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.feeds_menu,menu)
+
+        if(feedLimit == 10) {
+            menu?.findItem(R.id.mnu10)?.isChecked = true
+        } else {
+            menu?.findItem(R.id.mnu25)?.isChecked = true
+        }
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val feedURL: String
         when(item.itemId) {
             R.id.mnuFree ->
-                feedURL = "http://ax.itunes.apple.com/WebObjects/MZStoreServices.woa/ws/RSS/topfreeapplications/limit=10/xml"
+                feedURL = "http://ax.itunes.apple.com/WebObjects/MZStoreServices.woa/ws/RSS/topfreeapps/limit=%d/xml"
             R.id.mnuPaid ->
-                feedURL = "http://ax.itunes.apple.com/WebObjects/MZStoreServices.woa/ws/RSS/toppaidapplications/limit=10/xml"
+                feedURL = "http://ax.itunes.apple.com/WebObjects/MZStoreServices.woa/ws/RSS/toppaidapplications/limit=%d/xml"
             R.id.mnuSongs ->
-                feedURL = "http://ax.itunes.apple.com/WebObjects/MZStoreServices.woa/ws/RSS/topsongs/limit=10/xml"
+                feedURL = "http://ax.itunes.apple.com/WebObjects/MZStoreServices.woa/ws/RSS/topsongs/limit=%d/xml"
+            R.id.mnu10, R.id.mnu25 -> {
+                if(!item.isChecked) {
+                    item.isChecked = true
+                    feedLimit = 35 - feedLimit
+                    Log.d(TAG1, "onOptionsItemSelected: ${item.title} setting feed limit to $feedLimit")
+                } else {
+                    Log.d(TAG1, "onOptionsItemSelected: ${item.title} unchanged")
+                }
+            }
             else
                 -> return super.onOptionsItemSelected(item)
         }
-        downloadURL(feedURL)
+        downloadURL(feedURL.format(feedLimit))
         return true
     }
 
