@@ -14,17 +14,21 @@ import kotlin.properties.Delegates
 
 class MainActivity : AppCompatActivity() {
     private val TAG1 = "MainActivity"
+    private val downloadData by lazy { DownloadData(this, xmlListView) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         Log.d(TAG1, "onCreate: called")
-
-        val downloadData = DownloadData(this, xmlListView)
         downloadData.execute("http://ax.itunes.apple.com/WebObjects/MZStoreServices.woa/ws/RSS/topfreeapplications/limit=10/xml")
 
         Log.d(TAG1, "onCreate: done")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        downloadData.cancel(true)
     }
 
     companion object {
