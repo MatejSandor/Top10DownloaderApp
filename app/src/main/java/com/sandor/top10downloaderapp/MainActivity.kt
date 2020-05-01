@@ -26,6 +26,12 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        if(savedInstanceState != null) {
+            feedURL = savedInstanceState.getString(STATE_URL,feedURL)
+            feedLimit = savedInstanceState.getInt(STATE_URL,feedLimit)
+        }
+
         downloadURL(feedURL.format(feedLimit))
     }
 
@@ -79,11 +85,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
+        outState.putString(STATE_URL,feedURL)
+        outState.putInt(STATE_LIMIT,feedLimit)
 
-    }
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
     }
 
     override fun onDestroy() {
