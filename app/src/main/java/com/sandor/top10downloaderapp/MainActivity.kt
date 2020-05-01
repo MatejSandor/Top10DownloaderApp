@@ -12,13 +12,16 @@ import kotlinx.android.synthetic.main.activity_main.*
 import java.net.URL
 import kotlin.properties.Delegates
 
-
 class MainActivity : AppCompatActivity() {
     private val TAG1 = "MainActivity"
     private var downloadData: DownloadData? = null
 
     private var feedURL: String = "http://ax.itunes.apple.com/WebObjects/MZStoreServices.woa/ws/RSS/topfreeapplications/limit=%d/xml"
     private var feedLimit = 10
+
+    private var feedCachedURL = "INVALIDATED"
+    private val STATE_URL = "feedURL"
+    private val STATE_LIMIT = "feedLimit"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,8 +30,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun downloadURL(feedURL: String) {
-        downloadData = DownloadData(this, xmlListView)
-        downloadData?.execute(feedURL)
+        if(feedURL != feedCachedURL) {
+            downloadData = DownloadData(this, xmlListView)
+            downloadData?.execute(feedURL)
+            feedCachedURL = feedURL
+        } else {
+            Log.d(TAG1, "downloadURL: URL not changed")
+        }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -59,11 +68,22 @@ class MainActivity : AppCompatActivity() {
                     Log.d(TAG1, "onOptionsItemSelected: ${item.title} unchanged")
                 }
             }
+            R.id.mnuRefresh -> feedCachedURL = "INVALIDATED"
+
             else
                 -> return super.onOptionsItemSelected(item)
         }
         downloadURL(feedURL.format(feedLimit))
         return true
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
     }
 
     override fun onDestroy() {
